@@ -1,0 +1,34 @@
+# dsh-cabinet bundle patch：作为一条 insert 叠加在既有树上（dsh-base →
+# dsh-web-app 之后）。阁员模型钉扎是本插件的 config——改钉扎请在你的
+# profile cordis.patch.yml（~/.dsh/profiles/desktop/cordis.patch.yml）里
+# 以 id: dsh-cabinet 整段替换 config（patch 语义是整体替换不是合并），
+# HMR 热生效，下一场议事即按新钉扎解析。
+#
+# 钉扎原则（移植自 PI-Desktop cabinet ministers/README）：
+# - 锋（红队）必须与会话模型异源——铁律；
+# - 据/审/众同属 DeepSeek 家族但注意与在场他席错开；
+# - 立用高配、谋用经济档；远/骨用 Kimi 系。
+# reasoningEffort 取值：off | low | high | max；省略 = 该模型默认档。
+#
+# 下列 model id 是装机初值，首次使用前请用 list_subagent_models 工具核对
+# 本机实际可用路由（provider 存在但 model id 不在目录时，议事计划会要求
+# 主持人先核对再派发，失配席位回退会话默认模型并记入 disclosure）。
+
+- insert:
+    - id: dsh-cabinet
+      name: 'dsh-cabinet'
+      config:
+        ministers:
+          feng:  { provider: 'kimi-coding',      model: 'k3',            reasoningEffort: 'high' }
+          ju:    { provider: 'deepseek-account', model: 'deepseek-flash', reasoningEffort: 'max' }
+          li:    { provider: 'zai-coding-cn',    model: 'glm-5.3',       reasoningEffort: 'high' }
+          mou:   { provider: 'zai-coding-cn',    model: 'glm-5.3-flash' }
+          yuan:  { provider: 'kimi-coding',      model: 'k3',            reasoningEffort: 'high' }
+          zhong: { provider: 'deepseek-account', model: 'deepseek-flash', reasoningEffort: 'max' }
+          shen:  { provider: 'deepseek-account', model: 'deepseek-flash', reasoningEffort: 'max' }
+          gu:    { provider: 'kimi-coding',      model: 'k3',            reasoningEffort: 'high' }
+        # 候选池（可选）：征召席与回退场景按序取用的路由，不改动上方阁员钉扎；
+        # 想让某阁员固定用 Qwen 仍须改其钉扎条目。池空时回退会话默认模型。
+        pool:
+          - { provider: 'qwen-token-plan-cn', model: 'qwen3.8-max',  reasoningEffort: 'high' }
+          - { provider: 'qwen-token-plan-cn', model: 'qwen3.8-flash' }

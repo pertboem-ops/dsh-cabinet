@@ -1,0 +1,41 @@
+{
+  "schema": "cabinet-tiers/1",
+  "note": "档位预算唯一真源（v0.4 §五）。main.js TIERS 字面量块、cabinet.md §五 嵌入表由 scripts/generate.mjs 从本件渲染（生成时依赖、运行时无 I/O——M1′ 不变量保持）。改数值只改本件，然后跑 node scripts/generate.mjs && node tests/verify.mjs。",
+  "formulas": {
+    "callCap": "seats*rounds + seats + 1（名义 + 一整轮重派 + 1，+1 挂 F2 级联）",
+    "tokenCap": "round((nominalTokens*1.1 + nominalTokens/(seats*rounds))/1000)*1000（标称×1.1 + 次均成本，四舍五入至千位）",
+    "perCall": "nominalTokens/(seats*rounds)"
+  },
+  "tiers": {
+    "standard": {
+      "seats": 4,
+      "rounds": 1,
+      "nominalTokens": 14000,
+      "tokenCap": 19000,
+      "callCap": 9,
+      "perCallDisplay": "3.5K/次",
+      "nominal": "4 次",
+      "estimate": "约 14K token / 4 次调用 / 约 60 秒"
+    },
+    "advanced": {
+      "seats": 5,
+      "rounds": 2,
+      "nominalTokens": 45000,
+      "tokenCap": 54000,
+      "callCap": 16,
+      "perCallDisplay": "4.5K/次",
+      "nominal": "10 次",
+      "estimate": "约 45K token / 10 次调用 / 约 80-90 秒"
+    },
+    "max": {
+      "seats": 6,
+      "rounds": 2,
+      "nominalTokens": 55000,
+      "tokenCap": 65000,
+      "callCap": 19,
+      "perCallDisplay": "≈4.6K/次",
+      "nominal": "12 次",
+      "estimate": "约 55K token / 12 次调用 / 约 2 分钟"
+    }
+  }
+}

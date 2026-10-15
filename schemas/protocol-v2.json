@@ -1,0 +1,41 @@
+{
+  "schema": "cabinet-protocol/2",
+  "note": "protocol schema v2 字段真源（v0.4 §九）。升 v3 时与旧版机械 diff。缺失字段回放规则：旧档一律记'未采集'/null，禁止默认值回填（F-28）。dsh 分支修订：v0.2.2 增 replayable（续谈形态披露）；events 规范收窄为最小集（2026-10-11 审议场 P9 + v0.2.1 §四.2）。",
+  "fields": {
+    "schemaVersion": { "type": "number", "since": "2" },
+    "session": { "type": "string", "since": "1" },
+    "tier": { "type": "string", "note": "含升档路径如 standard→advanced；实际席数/轮次记 disclosure（schema 增 seats_actual/rounds_actual 挂批次 D 次件）", "since": "1" },
+    "topic": { "type": "string", "since": "1" },
+    "brief": { "type": "string", "note": "≤300 字速览", "since": "1" },
+    "seats": { "type": "array", "items": { "seat": "string", "agent": "string", "model": "string", "conclusion": "string（关键论据带证据等级）" }, "since": "1" },
+    "divergence": { "type": "array", "items": { "status": "未弥合|部分弥合|已解决|新发现", "text": "string" }, "since": "1", "note": "为空且未注明'首轮即收敛'不得合议" },
+    "decisions": { "type": "array of string", "since": "1", "note": "议定条款编号 P1…（跨场引用带场次前缀）" },
+    "actions": { "type": "array", "items": { "item": "string", "owner": "string", "due": "string" }, "since": "1" },
+    "dissent": { "type": "array of string", "since": "1" },
+    "disclosure": { "type": "string", "note": "AI 分角色推演＋各席 provider/model＋单/多源说明＋补位席注明＋轮次席数＋'调用轨未用 N 次'（P6-8）＋续谈形态增'立场连续性由会话承载'固定句＋误拦恢复大写标注（v0.2.5）", "since": "1" },
+    "replayable": { "type": "boolean", "since": "2.2-dsh", "note": "冷启动 true（每轮可由 round-N.jsonl 独立重建）；续谈 false（R2 依赖宿主会话压缩态，归档为权威记录但不可重放）；旧档缺失记未采集不回填" },
+    "beyond_preanswer": { "type": "object", "items": { "count": "number|null", "items": "array" }, "since": "2.4-dsh", "note": "v0.2.5 起为占位（预答测量链不建，审议场 P4）：恒 {count: null, items: []}，禁止回填；重启前置三条件见 docs/设计方案-v0.2.5.md §二" },
+    "degraded": { "type": "boolean", "note": "到场 <3 席 true；旧档缺失记未采集不回填", "since": "2" },
+    "cost": {
+      "since": "1",
+      "fields": {
+        "calls": { "since": "1", "note": "spawn 与 send_message 同计一次（v0.2.2 起 events 用 dispatch:spawn / dispatch:send_message 前缀供审计器重建）" },
+        "tokens_est": { "since": "1", "note": "dsh 分支：宿主 session_projcache 的 tokenUsage 三桶（uncachedInput/cacheRead/output）为实测真源，主持人代抄；不可得时退回接口口径估算并注明" },
+        "cap": { "since": "1" },
+        "cap_hit": { "since": "1" },
+        "deviation": { "since": "2", "note": "calls 与 tokens_est 相对 cap 的实际比值" },
+        "reassigns": { "since": "2.1", "note": "可选；重派次数（灾备率分母）；旧档文本追溯不入账" }
+      }
+    },
+    "archived": { "type": "boolean", "since": "1" }
+  },
+  "eventsEnum": ["intake", "setup", "R1", "R2", "steering", "upgrade", "synthesis", "archive", "close", "cost"],
+  "eventsRules": {
+    "minimalSet": "v0.2.2 起收窄为最小集：seq/t/phase/actor/event 五字段（detail 可选）；phase 建议沿用 eventsEnum 但属自由文本",
+    "mustCover": "三类必记事件：①派发（event 以 dispatch:spawn 或 dispatch:send_message 前缀开头）②送达（每轮收齐核对）③预算（升档切换/触顶中止/成本决算）；v0.2.5 起增 steering 类'组阁披露卡呈现'（since 2.5-dsh，分版本生效防旧档回放误判）",
+    "seq": "递增；seq0 允许一条 session_meta 元数据行",
+    "t": "ISO-8601，实时记录优先；事后补录取可证实下界并标 t_type:'lower-bound'",
+    "actor": "host|user|runtime|席位名|external"
+  },
+  "indexColumns": "ts/session/topic/tier/seats/verdict/files/source_doc/calls/gate_blocks/audit/beyond_preanswer/gate_overrides/card_reactions（v0.2.2 增 calls/gate_blocks/audit；v0.2.5 增 beyond_preanswer 占位列（恒 null 禁回填）/gate_overrides（误拦恢复放行计数，与 gate_blocks 分列）/card_reactions（组阁披露卡答复；v0.2.6 起为 确认/改定/散会，此前口径为 中断/提及/无））"
+}

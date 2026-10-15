@@ -1,0 +1,27 @@
+{
+  "name": "dsh-cabinet",
+  "version": "0.2.6",
+  "private": true,
+  "license": "MIT",
+  "author": "pertboem-ops",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pertboem-ops/dsh-cabinet.git"
+  },
+  "description": "Cabinet 内阁议事的 dsh 移植：低频重决策的多角色议事编排（cabinet_start 工具 + 内阁技能 + 三场景角色包 + 八阁员人格与模型钉扎）。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "verifiedHostVersion": "0.2.0-rc.2"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-skill": "^0.2.0-rc.2",
+    "@deepseek-ai/dsh-tools": "^0.2.0-rc.2"
+  }
+}

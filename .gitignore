@@ -1,0 +1,11 @@
+# 本机议事归档：运行时数据，插件每场议事自动生成，不上仓库
+.cabinet/
+
+# Node
+node_modules/
+*.log
+npm-debug.log*
+
+# 系统
+.DS_Store
+Thumbs.db
