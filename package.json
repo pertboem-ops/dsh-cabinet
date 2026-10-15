@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/pertboem-ops/dsh-cabinet.git"
   },
-  "description": "Cabinet 内阁议事的 dsh 移植：低频重决策的多角色议事编排（cabinet_start 工具 + 内阁技能 + 三场景角色包 + 八阁员人格与模型钉扎）。",
+  "description": "Cabinet 内阁议事：dsh 上的低频重决策多角色议事编排插件（cabinet_start 工具 + 内阁技能 + 三场景角色包 + 八阁员人格与模型钉扎）。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
